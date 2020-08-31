@@ -24,16 +24,16 @@ Despite that Node's implementation of "primordials" is an elegant and powerful o
 
 To generate the output, simply run the following:
 
-```sh
-deno run ./gen.ts > primordials.ts
+```bash
+$ deno run ./gen.ts > primordials.ts
 ```
 
 The script outputs the result to `stdout` so you can save it into any file you want (or use it any other creative way).
 
 Tests are also included but those are designed to be in use with Deno:
 
-```sh
-deno test primordials_test.ts
+```bash
+$ deno test primordials_test.ts
 ```
 
 When you have the generated file, you can simply import the built-ins you need.
