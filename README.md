@@ -78,6 +78,17 @@ Object.defineProperty(Set.prototype, "size", {
 assertStrictEquals(SetPrototypeSizeGetter(new Set([1, 2, 3])), 3);
 ```
 
+* Safe types: immutable clones of `Map`, `WeakMap`, `Set` & `Promise` are included as well, exported with their names prefixed with "Safe":
+```ts
+Set.prototype.has = () => { throw new Error("fake method") };
+const s = new SafeSet([1, 2, 3]);
+// when you're using the "safe" variant of these constructors, you don't have to worry about
+// any overwrites on that type's static or prototype members, because those are copied, bound & frozen
+assertStrictEquals(s.has(2), true);
+// this makes it more convenient than using the corresponding helpers provided by this module, e.g.:
+assertStrictEquals(MapPrototypeHas(s, 2), true);
+```
+
 ## Notes
 
 The "primordials" script must be included before any other that potentially mutates built-ins.

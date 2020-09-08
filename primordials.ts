@@ -1,8 +1,7 @@
 // Based on the concept of "primordials" implemented in Node.js (https://nodejs.org)
 // Copyright Joyent, Inc. and other Node contributors.
 
-// WARNING: This is an auto-generated file.
-// Do not modify it directly!
+// WARNING: This is an auto-generated file. Do not modify it directly!
 // If it doesn't satisfy your needs then please contribute to the script
 // that generated this file.
 // See: https://github.com/schwarzkopfb/typescript_primordials
@@ -12,10 +11,13 @@
 // the global proxy, which can be mutated by users.
 
 const { apply } = Reflect;
-const getPropDesc = (obj: object, key: string) =>
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+const getPropDesc = (obj: object, key: string | symbol) =>
   Reflect.getOwnPropertyDescriptor(obj, key) as PropertyDescriptor;
 
 export type UncurriedThisArg =
+  // eslint-disable-next-line @typescript-eslint/ban-types
   | object
   | symbol
   | string
@@ -32,8 +34,9 @@ export type Uncurried<F> = F extends (...args: infer U) => infer R
 // with the spread syntax, such that no additional special case is needed for
 // function calls w/o arguments.
 // Refs: https://github.com/v8/v8/blob/d6ead37d265d7215cf9c5f768f279e21bd170212/src/js/prologue.js#L152-L156
+// eslint-disable-next-line @typescript-eslint/ban-types
 export function uncurryThis<T extends Function>(func: T) {
-  return ((thisArg: UncurriedThisArg, ...args: any[]) =>
+  return ((thisArg: UncurriedThisArg, ...args: unknown[]) =>
     apply(func, thisArg, args)) as Uncurried<T>;
 }
 
@@ -676,3 +679,90 @@ export const PromisePrototypeConstructor = Promise.prototype.constructor;
 export const PromisePrototypeThen = uncurryThis(Promise.prototype.then);
 export const PromisePrototypeCatch = uncurryThis(Promise.prototype.catch);
 export const PromisePrototypeFinally = uncurryThis(Promise.prototype.finally);
+
+export class SafeMap<K, V> extends Map<K, V> {}
+Object.defineProperties(SafeMap, {
+  length: getPropDesc(Map, "length"),
+  name: getPropDesc(Map, "name"),
+});
+Object.defineProperties(SafeMap.prototype, {
+  constructor: getPropDesc(Map.prototype, "constructor"),
+  get: getPropDesc(Map.prototype, "get"),
+  set: getPropDesc(Map.prototype, "set"),
+  has: getPropDesc(Map.prototype, "has"),
+  delete: getPropDesc(Map.prototype, "delete"),
+  clear: getPropDesc(Map.prototype, "clear"),
+  entries: getPropDesc(Map.prototype, "entries"),
+  forEach: getPropDesc(Map.prototype, "forEach"),
+  keys: getPropDesc(Map.prototype, "keys"),
+  size: getPropDesc(Map.prototype, "size"),
+  values: getPropDesc(Map.prototype, "values"),
+  [Symbol.toStringTag]: getPropDesc(Map.prototype, Symbol.toStringTag),
+  [Symbol.iterator]: getPropDesc(Map.prototype, Symbol.iterator),
+});
+Object.setPrototypeOf(SafeMap.prototype, null);
+Object.freeze(SafeMap.prototype);
+Object.freeze(SafeMap);
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export class SafeWeakMap<K extends object, V> extends WeakMap<K, V> {}
+Object.defineProperties(SafeWeakMap, {
+  length: getPropDesc(WeakMap, "length"),
+  name: getPropDesc(WeakMap, "name"),
+});
+Object.defineProperties(SafeWeakMap.prototype, {
+  constructor: getPropDesc(WeakMap.prototype, "constructor"),
+  delete: getPropDesc(WeakMap.prototype, "delete"),
+  get: getPropDesc(WeakMap.prototype, "get"),
+  set: getPropDesc(WeakMap.prototype, "set"),
+  has: getPropDesc(WeakMap.prototype, "has"),
+  [Symbol.toStringTag]: getPropDesc(WeakMap.prototype, Symbol.toStringTag),
+});
+Object.setPrototypeOf(SafeWeakMap.prototype, null);
+Object.freeze(SafeWeakMap.prototype);
+Object.freeze(SafeWeakMap);
+
+export class SafeSet<E> extends Set<E> {}
+Object.defineProperties(SafeSet, {
+  length: getPropDesc(Set, "length"),
+  name: getPropDesc(Set, "name"),
+});
+Object.defineProperties(SafeSet.prototype, {
+  constructor: getPropDesc(Set.prototype, "constructor"),
+  has: getPropDesc(Set.prototype, "has"),
+  add: getPropDesc(Set.prototype, "add"),
+  delete: getPropDesc(Set.prototype, "delete"),
+  clear: getPropDesc(Set.prototype, "clear"),
+  entries: getPropDesc(Set.prototype, "entries"),
+  forEach: getPropDesc(Set.prototype, "forEach"),
+  size: getPropDesc(Set.prototype, "size"),
+  values: getPropDesc(Set.prototype, "values"),
+  keys: getPropDesc(Set.prototype, "keys"),
+  [Symbol.toStringTag]: getPropDesc(Set.prototype, Symbol.toStringTag),
+  [Symbol.iterator]: getPropDesc(Set.prototype, Symbol.iterator),
+});
+Object.setPrototypeOf(SafeSet.prototype, null);
+Object.freeze(SafeSet.prototype);
+Object.freeze(SafeSet);
+
+export class SafePromise<T> extends Promise<T> {}
+Object.defineProperties(SafePromise, {
+  length: getPropDesc(Promise, "length"),
+  name: getPropDesc(Promise, "name"),
+  all: getPropDesc(Promise, "all"),
+  race: getPropDesc(Promise, "race"),
+  resolve: getPropDesc(Promise, "resolve"),
+  reject: getPropDesc(Promise, "reject"),
+  allSettled: getPropDesc(Promise, "allSettled"),
+  any: getPropDesc(Promise, "any"),
+});
+Object.defineProperties(SafePromise.prototype, {
+  constructor: getPropDesc(Promise.prototype, "constructor"),
+  then: getPropDesc(Promise.prototype, "then"),
+  catch: getPropDesc(Promise.prototype, "catch"),
+  finally: getPropDesc(Promise.prototype, "finally"),
+  [Symbol.toStringTag]: getPropDesc(Promise.prototype, Symbol.toStringTag),
+});
+Object.setPrototypeOf(SafePromise.prototype, null);
+Object.freeze(SafePromise.prototype);
+Object.freeze(SafePromise);
